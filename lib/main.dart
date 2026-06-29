@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/02_dart_define/page.dart';
+import 'features/03_riverpod/page.dart';
 import 'features/placeholder_page.dart';
 
-void main() => runApp(const MaterialApp(home: HomePage()));
+void main() =>
+    runApp(const ProviderScope(child: MaterialApp(home: HomePage())));
 
 class _Tutorial {
   const _Tutorial({
@@ -22,10 +25,7 @@ final _tutorials = [
     hasDemo: false,
   ),
   _Tutorial(title: '02. dart-define で環境設定を切り替える', page: const DartDefinePage()),
-  _Tutorial(
-    title: '03. Riverpod による状態管理',
-    page: const PlaceholderPage(title: '03. Riverpod'),
-  ),
+  _Tutorial(title: '03. Riverpod による状態管理', page: const RiverpodMenuPage()),
   _Tutorial(
     title: '04. Freezed + JSON シリアライズ',
     page: const PlaceholderPage(title: '04. Freezed + JSON'),

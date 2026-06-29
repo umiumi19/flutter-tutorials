@@ -90,6 +90,34 @@ class CounterPage extends StatelessWidget {
 
 バケツリレーは消えました。でも素の Provider には弱点があります。
 
+### 補足：なぜ `context.watch<CounterModel>()` と書けるのか
+
+`provider` パッケージが `BuildContext` に**拡張メソッド**を追加しているからです。
+
+Dart には、自分が作っていない既存のクラスにメソッドを後から追加できる機能があります。`provider` はこの機能を使って、Flutter 標準の `BuildContext` に `.watch<T>()` と `.read<T>()` を追加しています。
+
+**`BuildContext` とは何か**
+
+Flutter のウィジェットは木構造（ツリー）で管理されています。`BuildContext` は「自分が今このツリーのどこにいるか」を知っているオブジェクトです。
+
+```
+ChangeNotifierProvider   ← CounterModel を「ここに置く」と宣言
+  └── MaterialApp
+        └── Scaffold
+              └── CounterPage   ← context はここの位置を知っている
+```
+
+**`context.watch<CounterModel>()` が何をしているか**
+
+「自分の位置（`context`）から、ツリーを**上に向かって**検索して、`CounterModel` を持っている `Provider` を探す」という処理です。
+
+図書館に例えると：
+- 各フロアに「このフロアで貸し出せる本の種類」が書いてある
+- 本を借りたい人が「`CounterModel` という本をください」と言うと、今いるフロアから上の階へ順番に探しに行く
+- 見つかったら返す、見つからなかったら「そんな本はない」とエラーになる
+
+これがコンパイル時にエラーにならず**実行時にエラーになる**理由です。「本があるか」はツリーを実際に走査しないと分からないからです。
+
 ### 落とし穴を**わざと**踏んでみる
 
 `main()` の `ChangeNotifierProvider` を**消して**、`MaterialApp` を直接 `runApp` してみてください。
