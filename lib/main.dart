@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import 'config.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() => runApp(const MaterialApp(home: ConfigPage()));
+
+class ConfigPage extends StatelessWidget {
+  const ConfigPage({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('ENV = ${AppConfig.env}'),
+            Text('API = ${AppConfig.apiBase}'),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -97,6 +97,31 @@ fvm flutter run -d chrome --dart-define-from-file=config/dev.json
 
 ---
 
+## 🔍 補足：なぜ `AppConfig.env` はコンストラクタなしで使えるのか
+
+### ① `static` がついている
+
+通常のフィールドはインスタンス（オブジェクト）に紐づきます。そのためコンストラクタで `AppConfig()` とインスタンスを作らないとアクセスできません。
+
+`static` をつけるとフィールドがクラス自体に紐づきます。インスタンスを作らなくても `AppConfig.env` と書けるのはこのためです。
+
+```dart
+// staticなし → インスタンスが必要
+final config = AppConfig();
+config.env; // こう書かないといけない
+
+// staticあり → クラス名で直接アクセス
+AppConfig.env; // インスタンス不要
+```
+
+### ② `const` がついている
+
+`const` はコンパイル時（ビルド時）に値が確定することを意味します。`String.fromEnvironment()` はビルド時に `--dart-define` で渡した値を埋め込みます。つまりアプリが起動する前からすでに値が決まっています。
+
+**まとめ：** 「ビルド時に環境変数を読んでクラスに直接紐づけている、インスタンス不要の定数」です。
+
+---
+
 ## 🧠 まとめ：あると何が嬉しいか
 
 | | ベタ書き | `--dart-define` |
