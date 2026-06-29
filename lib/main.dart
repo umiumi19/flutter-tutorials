@@ -1,138 +1,85 @@
 import 'package:flutter/material.dart';
-import 'config.dart';
+import 'features/02_dart_define/page.dart';
+import 'features/placeholder_page.dart';
 
-void main() => runApp(const MaterialApp(home: ConfigPage()));
+void main() => runApp(const MaterialApp(home: HomePage()));
 
-class ConfigPage extends StatelessWidget {
-  const ConfigPage({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('ENV = ${AppConfig.env}'),
-            Text('API = ${AppConfig.apiBase}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class _Tutorial {
+  const _Tutorial({
+    required this.title,
+    required this.page,
+    this.hasDemo = true,
+  });
   final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  final Widget page;
+  final bool hasDemo;
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+final _tutorials = [
+  _Tutorial(
+    title: '01. FVM によるバージョン管理',
+    page: const PlaceholderPage(title: '01. FVM'),
+    hasDemo: false,
+  ),
+  _Tutorial(title: '02. dart-define で環境設定を切り替える', page: const DartDefinePage()),
+  _Tutorial(
+    title: '03. Riverpod による状態管理',
+    page: const PlaceholderPage(title: '03. Riverpod'),
+  ),
+  _Tutorial(
+    title: '04. Freezed + JSON シリアライズ',
+    page: const PlaceholderPage(title: '04. Freezed + JSON'),
+  ),
+  _Tutorial(
+    title: '05. Dio による HTTP 通信',
+    page: const PlaceholderPage(title: '05. Dio'),
+  ),
+  _Tutorial(
+    title: '06. go_router によるルーティング',
+    page: const PlaceholderPage(title: '06. go_router'),
+  ),
+  _Tutorial(
+    title: '07. flutter_secure_storage',
+    page: const PlaceholderPage(title: '07. SecureStorage'),
+  ),
+  _Tutorial(
+    title: '08. OpenAPI Generator',
+    page: const PlaceholderPage(title: '08. OpenAPI Generator'),
+  ),
+  _Tutorial(
+    title: '09. Supabase 連携',
+    page: const PlaceholderPage(title: '09. Supabase'),
+  ),
+];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      appBar: AppBar(title: const Text('Flutter チュートリアル')),
+      body: ListView.separated(
+        itemCount: _tutorials.length,
+        separatorBuilder: (_, __) => const Divider(height: 1),
+        itemBuilder: (context, i) {
+          final t = _tutorials[i];
+          return ListTile(
+            title: Text(t.title),
+            trailing: t.hasDemo
+                ? const Icon(Icons.arrow_forward_ios, size: 14)
+                : const Text(
+                    'コマンドのみ',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+            onTap: t.hasDemo
+                ? () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => t.page),
+                  )
+                : null,
+          );
+        },
       ),
     );
   }
