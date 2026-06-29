@@ -1,0 +1,15 @@
+
+# FVM Version Cache
+.fvm/
+
+# Flutter/Dart build artifacts
+.dart_tool/
+build/
+*.iml
+
+# IDE
+.idea/
+.vscode/
+
+# Flutter metadata
+.metadata
